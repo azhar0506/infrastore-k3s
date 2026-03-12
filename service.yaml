@@ -1,8 +1,8 @@
-# service.yaml
 apiVersion: v1
 kind: Service
 metadata:
   name: infrastore-service
+  namespace: infrastore
 spec:
   selector:
     app: infrastore
@@ -10,4 +10,3 @@ spec:
   - port: 80
     targetPort: 8000
   type: ClusterIP
-
