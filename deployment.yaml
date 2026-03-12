@@ -13,6 +13,10 @@ spec:
       labels:
         app: infrastore
     spec:
+      securityContext:      # section makes the pod nonroot
+        runAsNonRoot: true  # enforces container to be nonroot
+        runAsUser: 1000     # userid of user (not 0), 1000 is standard
+        runAsGroup: 1000    # groupid of user (not 0), 1000 is standard
       containers:
       - name: infrastore
         image: saheerbabu/infrastore:latest
