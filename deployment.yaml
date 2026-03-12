@@ -29,4 +29,9 @@ spec:
             secretKeyRef:
               name: infrastore-secret
               key: secret-key
+        - name: DJANGO_SUPERUSER_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: infrastore-config
+              key: DJANGO_SUPERUSER_USERNAME
 

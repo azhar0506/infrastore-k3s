@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: infrastore-config
+  namespace: infrastore
+data:
+  DJANGO_SUPERUSER_USERNAME: "admin"
