@@ -17,3 +17,9 @@ spec:
     ports:
     - protocol: TCP
       port: 8000  #port the app listens on
+  egress:
+  - ports:
+    - protocol: UDP
+      port: 53  # allow DNS lookups
+    - protocol: TCP
+      port: 53  # allow DNS over TCP
