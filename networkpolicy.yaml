@@ -9,6 +9,7 @@ spec:
       app: infrastore
   policyTypes:
   - Ingress
+  - Egress  
   ingress:
   - from:
     - namespaceSelector:
