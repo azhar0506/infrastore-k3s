@@ -34,4 +34,16 @@ spec:
             configMapKeyRef:
               name: infrastore-config
               key: DJANGO_SUPERUSER_USERNAME
+        volumeMounts:
+        - name: media
+          mountPath: /app/media
+        - name: db
+          mountPath: /app/db
+      volumes:
+      - name: media
+        persistentVolumeClaim:
+          claimName: infrastore-media-pvc
+      - name: db
+        persistentVolumeClaim:
+          claimName: infrastore-db-pvc
 

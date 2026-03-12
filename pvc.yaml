@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: infrastore-media-pvc
+  namespace: infrastore
+spec:
+  accessModes:
+  - ReadWriteOnce  # change this once switch is made from sqlite to postgres 
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: infrastore-db-pvc
+  namespace: infrastore
+spec:
+  accessModes:
+  - ReadWriteOnce    # //
+  resources:
+    requests:
+      storage: 1Gi
