@@ -17,6 +17,7 @@ spec:
         runAsNonRoot: true  # enforces container to be nonroot
         runAsUser: 1000     # userid of user (not 0), 1000 is standard
         runAsGroup: 1000    # groupid of user (not 0), 1000 is standard
+        fsGroup: 1000 # need this to be owned by the same group as app so it can write to pvcs
       containers:
       - name: infrastore
         image: saheerbabu/infrastore:latest
@@ -28,16 +29,14 @@ spec:
             secretKeyRef:
               name: infrastore-secret
               key: admin-password
-        - name: DJANGO_SECRET_KEY
+        - name: SECRET_KEY
           valueFrom:
             secretKeyRef:
               name: infrastore-secret
               key: secret-key
-        - name: DJANGO_SUPERUSER_USERNAME
-          valueFrom:
-            configMapKeyRef:
-              name: infrastore-config
-              key: DJANGO_SUPERUSER_USERNAME
+        envFrom:
+        - configMapRef:
+            name: infrastore-config  # load all configmap keys as env vars
         readinessProbe:
           tcpSocket:                # using tcpSocket instead of http because theres no /healthz in the container
             port: 8000
