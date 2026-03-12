@@ -5,3 +5,4 @@ metadata:
   namespace: infrastore
 data:
   DJANGO_SUPERUSER_USERNAME: "admin"
+  DEBUG: "False"
