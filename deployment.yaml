@@ -37,7 +37,15 @@ spec:
           valueFrom:
             configMapKeyRef:
               name: infrastore-config
-              key: DJANGO_SUPERUSER_USERNAME
+              key: DJANGO_SUPERUSER_USERNAME 
+        resources:
+           requests:
+             cpu: "100m"         # lightweight Django app doesnt need much CPU especially when idle
+             memory: "128Mi"     # //
+           limits:
+             cpu: "500m"         # 5x the request
+             memory: "256Mi"     # 2x the memory
+        
         volumeMounts:
         - name: media
           mountPath: /app/media
