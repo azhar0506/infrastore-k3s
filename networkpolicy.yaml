@@ -9,3 +9,11 @@ spec:
       app: infrastore
   policyTypes:
   - Ingress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: ingress-nginx # only allow traffic from the ingress-nginx namespace
+    ports:
+    - protocol: TCP
+      port: 8000  #port the app listens on
