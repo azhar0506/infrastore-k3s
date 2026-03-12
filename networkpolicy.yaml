@@ -1,0 +1,11 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: infrastore-network-policy
+  namespace: infrastore
+spec:
+  podSelector:
+    matchLabels:
+      app: infrastore
+  policyTypes:
+  - Ingress
