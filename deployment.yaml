@@ -38,14 +38,25 @@ spec:
             configMapKeyRef:
               name: infrastore-config
               key: DJANGO_SUPERUSER_USERNAME 
-        resources:
+          readinessProbe:
+            tcpSocket:                # using tcpSocket instead of httpsocket because theres no /healthz in the container
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 3
+          livenessProbe:              # //
+            tcpSocket:
+              port: 8000
+            initialDelaySeconds: 20
+            periodSeconds: 20
+            failureThreshold: 3                
+          resources:
            requests:
              cpu: "100m"         # lightweight Django app doesnt need much CPU especially when idle
              memory: "128Mi"     # //
            limits:
              cpu: "500m"         # 5x the request
-             memory: "256Mi"     # 2x the memory
-        
+             memory: "256Mi"     # 2x the memory 
         volumeMounts:
         - name: media
           mountPath: /app/media
