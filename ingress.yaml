@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: infrastore-ingress
+  namespace: infrastore
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: infrastore.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: infrastore-service
+            port:
+              number: 80
+
