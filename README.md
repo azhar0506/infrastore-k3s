@@ -48,20 +48,20 @@ Made diagram light so I can explain more during panel
     - `brew install --cask multipass`
 - launch the VM:
     - `multipass launch --name infrastore --cpus 2 --memory 2G --disk 10G`
+- copy this repo into the VM (run from your Mac, inside the parent directory of this repo):
+    - `multipass transfer -r ./infrastore-k3s infrastore:/home/ubuntu/`
 - install k3s inside the VM:
     - `multipass shell infrastore`
+    - `sudo -i`
     - `curl -sfL https://get.k3s.io | sh -`
 - disable Traefik (k3s ships with Traefik by default, we replace it with nginx):
     - `echo "disable: traefik" | sudo tee /etc/rancher/k3s/config.yaml`
-    - `sudo systemctl restart k3s`
-    - `sudo kubectl delete helmchart traefik traefik-crd -n kube-system`
+    - `systemctl restart k3s`
+    - `kubectl delete helmchart traefik traefik-crd -n kube-system`
 - install the nginx ingress controller (inside the VM):
     - `kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10.1/deploy/static/provider/cloud/deploy.yaml`
-- Copy manifests into the VM (run this from your Mac, inside the root of this repo):
-    - `multipass transfer -r ./infrastore infrastore:/home/ubuntu/infrastore`
 - Add the following to `/etc/hosts` to resolve `infrastore.local` to the VM (this tells your machine where to route requests for that hostname):
-    - If testing from inside the VM: `echo "<VM-IP> infrastore.local" | sudo tee -a /etc/hosts`
-    - If testing from your Mac: add `<VM-IP> infrastore.local` to your Mac's `/etc/hosts`
+    - From inside the VM: `echo "<VM-IP> infrastore.local" | sudo tee -a /etc/hosts`
     - Get the VM IP with: `multipass info infrastore`
 
 ### Deployment
@@ -70,7 +70,9 @@ Shell into the VM and run the deploy script:
 
 ```sh
 multipass shell infrastore
-cd infrastore
+sudo -i
+cp -r /home/ubuntu/infrastore-k3s ~/
+cd ~/infrastore-k3s
 chmod +x deploy.sh
 ./deploy.sh
 ```
@@ -95,6 +97,7 @@ curl -X POST http://infrastore.local/api/token/ \
 Upload a file:
 
 ```bash
+echo "hello world" > example.txt
 curl -X POST http://infrastore.local/api/upload/ \
   -H "Authorization: Token YOUR_TOKEN" \
   -F "file=@example.txt"
